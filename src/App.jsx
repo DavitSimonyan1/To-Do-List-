@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import "./App.css";
 import Input from "./Input";
 import Button from "./Button";
@@ -8,21 +8,21 @@ function App() {
   const [todo, setTodo] = useState("");
   const [task, setTask] = useState([]);
 
-  function addTodo() {
+  const addTodo = useCallback(() => {
     if (todo.trim() === "") return;
-    setTask([...task, { id: Date.now(), text: todo.trim() }]);
+    setTask((prev) => [...prev, { id: Date.now(), text: todo.trim() }]);
     setTodo("");
-  }
+  }, [todo]);
 
-  function deleted(index) {
-    setTask(task.filter((_, i) => i !== index));
-  }
+  const deleted = useCallback((id) => {
+    setTask((prev) => prev.filter((t) => t.id !== id));
+  }, []);
 
-  const edit = (id, newText) => {
-    setTask(
-      task.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo))
+  const edit = useCallback((id, newText) => {
+    setTask((prev) =>
+      prev.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo))
     );
-  };
+  }, []);
 
   return (
     <div className="container">

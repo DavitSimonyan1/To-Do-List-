@@ -1,16 +1,19 @@
 import TodoItem from "./TodoItem";
+import { memo } from "react";
 
-export default function TodoList({ tasks, onDelete, onEdit }) {
+function TodoList({ tasks, onDelete, onEdit }) {
   return (
     <ul className="ul">
-      {tasks.map((t, i) => (
+      {tasks.map((t) => (
         <TodoItem
           key={t.id}
           task={t}
-          onDelete={() => onDelete(i)}
+          onDelete={() => onDelete(t.id)}
           onEdit={onEdit}
         />
       ))}
     </ul>
   );
 }
+
+export default memo(TodoList);
